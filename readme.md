@@ -83,7 +83,7 @@ ALTER TABLE `guestbook`
 
 
 
-## Board SQL
+## Board
 
 
 ```mysql
@@ -100,9 +100,10 @@ CREATE TABLE `board` (
 	`hit`      VARCHAR(50)  NOT NULL DEFAULT 0 COMMENT '조회수', -- 조회수
 	`contents` TEXT         NOT NULL COMMENT '내용', -- 내용
 	`regDate`  DATETIME     NOT NULL COMMENT '작성일', -- 작성일
-	`g_no`     VARCHAR(50)  NOT NULL COMMENT '그룹번호', -- 그룹번호
+	`g_no`     VARCHAR(50)  NOT NULL DEFAULT 0 COMMENT '그룹번호', -- 그룹번호
 	`o_no`     VARCHAR(50)  NOT NULL COMMENT '그룹내 순서', -- 그룹내 순서
-	`depth`    VARCHAR(50)  NOT NULL COMMENT '글의 깊이' -- 글의 깊이
+	`depth`    VARCHAR(50)  NOT NULL COMMENT '글의 깊이', -- 글의 깊이
+	`flag`     INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '삭제여부' -- 삭제여부
 )
 COMMENT '게시판';
 

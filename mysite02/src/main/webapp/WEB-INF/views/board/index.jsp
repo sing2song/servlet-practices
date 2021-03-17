@@ -36,17 +36,24 @@
 						<td>${vo.no}</td>
 						<td>
 						<c:choose>
-						<c:when test="${vo.title=='삭제'}">
-							<span style="color:gray;">[삭제된 글입니다]</span>
-						</c:when>							
-						<c:otherwise>
-							<a href="${pageContext.request.contextPath}/board?a=look&no=${vo.no}" style="text-align:left; padding-left:${vo.depth*20}px;">
+							<c:when test="${vo.flag=='1'}">
+								<c:if test="${vo.depth==0}">
+									<span style="color:gray;">[삭제된 글입니다]</span>
+								</c:if>		
 								<c:if test="${vo.depth>0}">
-								<img src="${pageContext.request.contextPath }/assets/images/reply.png"/>
-								</c:if>
-								${vo.title}											
-							</a>
-						</c:otherwise>
+									<img src="${pageContext.request.contextPath }/assets/images/reply.png" style="text-align:left;"/>
+									<span style="color:gray;">[삭제된 답글입니다]</span>
+								</c:if>								
+							</c:when>
+												
+							<c:otherwise>
+								<a href="${pageContext.request.contextPath}/board?a=look&no=${vo.no}" style="text-align:left; padding-left:${vo.depth*20}px;">
+									<c:if test="${vo.depth>0}">
+									<img src="${pageContext.request.contextPath }/assets/images/reply.png" style="text-align:left;"/>
+									</c:if>
+									${vo.title}											
+								</a>
+							</c:otherwise>
 						</c:choose>		
 						</td>
 						<td>${vo.writer}</td>

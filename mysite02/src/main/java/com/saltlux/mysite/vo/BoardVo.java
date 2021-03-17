@@ -12,6 +12,7 @@ public class BoardVo {
 	private String g_no;
 	private String o_no;
 	private String depth;
+	private String flag;
 	
 	public Long getNo() {
 		return no;
@@ -79,11 +80,17 @@ public class BoardVo {
 	public void setDepth(String depth) {
 		this.depth = depth;
 	}
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 	@Override
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", writer=" + writer + ", email=" + email + ", password="
 				+ password + ", hit=" + hit + ", contents=" + contents + ", regDate=" + regDate + ", g_no=" + g_no
-				+ ", o_no=" + o_no + ", depth=" + depth + "]";
+				+ ", o_no=" + o_no + ", depth=" + depth + ", flag=" + flag + "]";
 	}
 	
 	

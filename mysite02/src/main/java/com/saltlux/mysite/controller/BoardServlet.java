@@ -100,12 +100,12 @@ public class BoardServlet extends HttpServlet {
 
 			String no = request.getParameter("no");
 			String password = request.getParameter("password");
-			String g_no = new BoardDao().findByNo(no).getG_no();
-			String o_no = new BoardDao().findByNo(no).getO_no();//원글의 답글 수
-			String depth = new BoardDao().findByNo(no).getDepth();//원글의 답글 수
-			System.out.println("["+no+"] 원글의 g_no:"+g_no +", 원글의 o_no:"+o_no+", 원글의 depth:"+depth);
+			BoardVo originVo = new BoardDao().findByNo(no);
 			
-			if(new BoardDao().delete(no,password,g_no,o_no,depth))	
+			originVo.setNo(Long.parseLong(no));
+			originVo.setPassword(password);
+			
+			if(new BoardDao().delete(originVo))	
 				WebUtil.redirect(request.getContextPath() + "/board?p=1", request, response);
 			else {
 				//비밀번호 틀렸을때

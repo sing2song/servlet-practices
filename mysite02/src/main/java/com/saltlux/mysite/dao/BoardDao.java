@@ -40,7 +40,7 @@ public class BoardDao {
 			conn = getConnection();
 			
 			//3. SQL 준비
-			String sql = "select R1.* FROM(select no, title, writer, email, password, hit ,date_format(regDate, '%Y-%m-%d %H:%i:%s'),depth from board  order by cast(g_no as unsigned) desc, cast(o_no as unsigned) asc, cast(depth as unsigned) asc) R1 LIMIT 5 OFFSET ?";
+			String sql = "select R1.* FROM(select no, title, writer, email, password, hit ,date_format(regDate, '%Y-%m-%d %H:%i:%s'),depth,flag from board  order by cast(g_no as unsigned) desc, cast(o_no as unsigned) asc, no asc, cast(depth as unsigned) asc) R1 LIMIT 5 OFFSET ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. 바인딩
@@ -59,7 +59,8 @@ public class BoardDao {
 				String hit = rs.getString(6);
 				String regDate = rs.getString(7);
 				String depth = rs.getString(8);
-
+				String flag = rs.getString(9);
+				
 				BoardVo vo = new BoardVo();
 				vo.setNo(no);
 				vo.setTitle(title);
@@ -69,6 +70,7 @@ public class BoardDao {
 				vo.setHit(hit);
 				vo.setRegDate(regDate);
 				vo.setDepth(depth);
+				vo.setFlag(flag);
 				
 				list.add(vo);
 			}
@@ -234,12 +236,20 @@ public class BoardDao {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		System.out.println("insert들어왓엉");
+		
 		try {
 			conn = getConnection();
 			
-			//3. SQL 준비		
-			String sql = "insert into board values(null,?,?,?,?,0,?,now(),(select max(cast(g_no as unsigned))+1 from board as b),1,0)";
+			//3. SQL 준비	
+			String sql="";
+			List<BoardVo> list = new BoardDao().findAll("1");
+			System.out.println(list);
+			//첫글일 때
+			if(list.isEmpty())
+				sql ="insert into board values(null,?,?,?,?,0,?,now(),1,1,0,0)";
+			//첫글이 아닐때	
+			else 
+				sql = "insert into board values(null,?,?,?,?,0,?,now(),(select max(cast(g_no as unsigned))+1 from board as b),1,0,0)";
 			pstmt = conn.prepareStatement(sql);
 
 			//4. 바인딩
@@ -274,69 +284,57 @@ public class BoardDao {
 	}
 	
 	
-	public boolean delete(String no, String password, String g_no,String o_no,String depth) {
+	public boolean delete(BoardVo originVo) {
 		boolean result = false;
 		Connection conn = null;
-		PreparedStatement pstmt = null,pstmt2=null,pstmt3=null,pstmt4=null;
-		int count=0,count2=0,count3=0,count4=0;
+		PreparedStatement pstmt = null,pstmt2=null;
+		ResultSet rs = null;
+		int count=0;
 		try {
 			conn = getConnection();
+			System.out.println("[삭제 원본글] "+originVo);
 			
 			//3. SQL 준비
+			//답글이있는글인가
 			String sql="";
-			if(Integer.parseInt(o_no)>1) {//답글이 있는 글
-				sql = "update board set o_no=o_no-1 where g_no=?";
-				pstmt = conn.prepareStatement(sql);
+			sql="select * from board where g_no=? and no>?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, originVo.getG_no());
+			pstmt.setLong(2, originVo.getNo());
+			
+			rs = pstmt.executeQuery();
+			
+			//rs.next()가 있으면 답글이 있다!			
+			if(rs.next()) {
+				String sql2="update board set flag=1 where no=?";
+				pstmt2 = conn.prepareStatement(sql2);
 				
-				//4. 바인딩
-				pstmt.setString(1,g_no);
+				pstmt2.setLong(1, originVo.getNo());
 				
-				if(Integer.parseInt(depth)==0) {
-					System.out.println("depth는? "+depth);
-					String sql2="update board set title='삭제' where no=?";
-					pstmt2 = conn.prepareStatement(sql2);
-					
-					pstmt2.setString(1,no);
-				}
-				if(pstmt2==null) {//첫글이지워지면 depth변동X
-					String sql3="update board set depth=depth-1 where g_no=? and depth>?";
-					pstmt3=conn.prepareStatement(sql3);
-					
-					pstmt3.setString(1, g_no);
-					pstmt3.setString(2, depth);
-				}
+			}else {//답글이없다! => 지운다!
+			
+				String sql2="delete from board where no=?";
+				pstmt2 = conn.prepareStatement(sql2);
+				
+				pstmt2.setLong(1, originVo.getNo());
 			}
 			
-			
-			sql = "delete from board where no=? and password=?";
-			pstmt4 = conn.prepareStatement(sql);
-			
-			//4. 바인딩
-			pstmt4.setString(1,no);
-			pstmt4.setString(2, password);
-			
-			
 			//5. SQL문 실행
-			if(pstmt!=null)
-				count = pstmt.executeUpdate();
+						
+			count= pstmt2.executeUpdate();
 			
-			if(pstmt3!=null)
-				count3 = pstmt3.executeUpdate();
 			
-			if(pstmt2!=null)
-				count2= pstmt2.executeUpdate();
-			else
-				count4 = pstmt4.executeUpdate();
 			
-			System.out.println("count="+count+", count2="+count2+", count3="+count3+", count4="+count4);
-			System.out.println(count|count2|count3);
 			//6. 결과
-			result = (count|count2|count3|count4)>=1;//하나라도 실행되면 ok
+			result = count==1;//하나라도 실행되면 ok
 			
 		}catch (SQLException  e) {
 			System.out.println("error : "+e);
 		}finally {
-			try {				
+			try {		
+				if(rs!=null) {
+					rs.close();
+				}
 				if(pstmt!=null) {
 					pstmt.close();//없어도 되지만 명시적으로 등록
 				}
@@ -358,16 +356,15 @@ public class BoardDao {
 		try {
 			conn = getConnection();
 			
+			
 			//3. SQL 준비		
-			String sql1 = "update board set o_no=o_no+1 where g_no=? and o_no>=?";
-			pstmt = conn.prepareStatement(sql1);
 			
-			pstmt.setString(1, originVo.getG_no());
-			pstmt.setString(2, originVo.getO_no());
-			
-			String sql2 = "insert into board values(null,?,?,?,?,0,?,now(),?,?,?)";
+			String sql2 = "insert into board values(null,?,?,?,?,0,?,now(),?,?,?,0)";
 			pstmt2 = conn.prepareStatement(sql2);
 
+			String sql1 = "update board set o_no=o_no+1 where g_no=? and o_no>=?";
+			pstmt = conn.prepareStatement(sql1);			
+			
 			//4. 바인딩
 			pstmt2.setString(1,vo.getTitle());
 			pstmt2.setString(2,vo.getWriter());
@@ -378,9 +375,15 @@ public class BoardDao {
 			pstmt2.setString(7, (Integer.parseInt(originVo.getO_no())+1)+"");
 			pstmt2.setString(8, (Integer.parseInt(originVo.getDepth())+1)+"");
 			
+			pstmt.setString(1, (Integer.parseInt(originVo.getO_no())+1)+"");
+			pstmt.setString(2, originVo.getO_no());
+			
 			//5. SQL문 실행
-			int count = pstmt.executeUpdate();
+			
 			int count2 = pstmt2.executeUpdate();
+			int count = pstmt.executeUpdate();
+			
+			
 			
 			//6. 결과
 			result = count==1&count2==1;
