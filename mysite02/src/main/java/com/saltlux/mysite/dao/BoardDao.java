@@ -40,7 +40,7 @@ public class BoardDao {
 			conn = getConnection();
 			
 			//3. SQL 준비
-			String sql = "select R1.* FROM(select no, title, writer, email, password, hit ,date_format(regDate, '%Y-%m-%d %H:%i:%s'),depth from board  order by g_no desc, depth asc) R1 LIMIT 5 OFFSET ?";
+			String sql = "select R1.* FROM(select no, title, writer, email, password, hit ,date_format(regDate, '%Y-%m-%d %H:%i:%s'),depth from board  order by cast(g_no as unsigned) desc, cast(o_no as unsigned) asc, cast(depth as unsigned) asc) R1 LIMIT 5 OFFSET ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. 바인딩
@@ -234,12 +234,12 @@ public class BoardDao {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
+		System.out.println("insert들어왓엉");
 		try {
 			conn = getConnection();
 			
 			//3. SQL 준비		
-			String sql = "insert into board values(null,?,?,?,?,0,?,now(),(select max(g_no)+1 from board as b),1,0)";
+			String sql = "insert into board values(null,?,?,?,?,0,?,now(),(select max(cast(g_no as unsigned))+1 from board as b),1,0)";
 			pstmt = conn.prepareStatement(sql);
 
 			//4. 바인딩
@@ -249,9 +249,10 @@ public class BoardDao {
 			pstmt.setString(4,vo.getPassword());
 			pstmt.setString(5,vo.getContents());
 			
+			
 			//5. SQL문 실행
 			int count = pstmt.executeUpdate();
-
+			
 			//6. 결과
 			result = count==1;//맞으면 true 아니면 false
 			
@@ -268,7 +269,7 @@ public class BoardDao {
 				e.printStackTrace();
 			}
 		}		
-
+		
 		return result;
 	}
 	

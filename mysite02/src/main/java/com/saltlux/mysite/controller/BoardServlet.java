@@ -44,7 +44,7 @@ public class BoardServlet extends HttpServlet {
 			vo.setPassword(authUser.getPassword());
 			vo.setContents(contents);
 
-			System.out.println(vo);
+			System.out.println("[servlet - write]"+vo);
 			new BoardDao().insert(vo);
 
 			WebUtil.redirect(request.getContextPath() + "/board?p=1", request, response);
