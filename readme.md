@@ -2,7 +2,84 @@
 
 ## 테이블 구성
 
+- user
+
+![image-20210317122020590](md-images/image-20210317122020590.png)
+
+
+
+- guestbook
+
+![image-20210317122114538](md-images/image-20210317122114538.png)
+
+
+
+- board
+
 ![image-20210317121537438](C:%5CUsers%5C32153256%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210317121537438.png)
+
+
+
+## User
+
+```mysql
+-- 회원
+DROP TABLE IF EXISTS `user` RESTRICT;
+
+-- 회원
+CREATE TABLE `user` (
+	`no`        INT UNSIGNED          NOT NULL COMMENT '번호', -- 번호
+	`name`      VARCHAR(50)           NOT NULL COMMENT '이름', -- 이름
+	`email`     VARCHAR(200)          NOT NULL COMMENT '이메일', -- 이메일
+	`password`  VARCHAR(20)           NOT NULL COMMENT '비밀번호', -- 비밀번호
+	`gender`    ENUM('male','female') NOT NULL COMMENT '성별', -- 성별
+	`join_date` DATETIME              NOT NULL COMMENT '가입' -- 가입
+)
+COMMENT '회원';
+
+-- 회원
+ALTER TABLE `user`
+	ADD CONSTRAINT `PK_user` -- 회원 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `user`
+	MODIFY COLUMN `no` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '번호';
+```
+
+
+
+
+
+## GuestBook
+
+```mysql
+-- 방명록
+DROP TABLE IF EXISTS `guestbook` RESTRICT;
+
+-- 방명록
+CREATE TABLE `guestbook` (
+	`no`       INT UNSIGNED NOT NULL COMMENT '번호', -- 번호
+	`name`     VARCHAR(50)  NOT NULL COMMENT '이름', -- 이름
+	`password` VARCHAR(20)  NOT NULL COMMENT '비밀번호', -- 비밀번호
+	`contents` TEXT         NOT NULL COMMENT '내용', -- 내용
+	`reg_date` DATETIME     NOT NULL COMMENT '등록일' -- 등록일
+)
+COMMENT '방명록';
+
+-- 방명록
+ALTER TABLE `guestbook`
+	ADD CONSTRAINT `PK_guestbook` -- 방명록 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `guestbook`
+	MODIFY COLUMN `no` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '번호';
+```
+
+
 
 
 
