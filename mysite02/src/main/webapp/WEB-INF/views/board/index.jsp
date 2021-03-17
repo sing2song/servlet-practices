@@ -70,8 +70,8 @@
 						<li class="selected"><a href="/mysite02/board?p=1">1</a></li>
 						<li><a href="/mysite02/board?p=2">2</a></li>
 						<li><a href="/mysite02/board?p=3">3</a></li>
-						<li>4</li>
-						<li>5</li>
+						<li><a href="/mysite02/board?p=4">4</a></li>
+						<li><a href="/mysite02/board?p=5">5</a></li>
 						<li><a href="">▶</a></li>
 					</ul>
 				</div>					
