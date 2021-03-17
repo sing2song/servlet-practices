@@ -359,10 +359,11 @@ public class BoardDao {
 			conn = getConnection();
 			
 			//3. SQL 준비		
-			String sql1 = "update board set o_no=o_no+1 where g_no=?";
+			String sql1 = "update board set o_no=o_no+1 where g_no=? and o_no>=?";
 			pstmt = conn.prepareStatement(sql1);
 			
 			pstmt.setString(1, originVo.getG_no());
+			pstmt.setString(2, originVo.getO_no());
 			
 			String sql2 = "insert into board values(null,?,?,?,?,0,?,now(),?,?,?)";
 			pstmt2 = conn.prepareStatement(sql2);
@@ -382,7 +383,7 @@ public class BoardDao {
 			int count2 = pstmt2.executeUpdate();
 			
 			//6. 결과
-			result = count==1 && count2==1;//맞으면 true 아니면 false
+			result = count==1&count2==1;
 			
 		}catch (SQLException  e) {
 			System.out.println("error : "+e);
