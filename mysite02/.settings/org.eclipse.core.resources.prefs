@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/WEB-INF/views/board/index.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/joinform.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/joinsuccess.jsp=UTF-8
+encoding//src/test/resources=UTF-8
