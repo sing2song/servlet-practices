@@ -81,7 +81,7 @@ public class BoardPaging {
 		
 	}
 	
-	public void makeSearchPagingHTML() {
+	public void makeSearchPagingHTML(String search) {
 		pagingHTML=new StringBuffer();
 		
 		int totalP = (totalB+pageSize-1)/pageSize;//총 페이지 수
@@ -91,17 +91,17 @@ public class BoardPaging {
 		if(endPage>totalP) endPage=totalP;//총페이지보다 endPage가 크면 totalP를 덮어씌운다
 		
 		if(startPage>pageBlock)
-			pagingHTML.append("[<span id='paging' onclick='boardSearchPaging("+(startPage-1)+")'>이전</span>]");
+			pagingHTML.append("<li><a href='/mysite02/board?a=search&search="+search+"&p="+(startPage-1)+"'>◀</a></li>");
 		
 		for(int i=startPage; i<=endPage; i++) {
 			if(i==currentPage)
-				pagingHTML.append("[ <span id='currentPaging'	onclick='boardSearchPaging("+i+")'>"+i+"</span> ]");
+				pagingHTML.append("<li class='selected'><a href='/mysite02/board?a=search&search="+search+"&p="+i+"'>"+i+"</a></li>");
 			else 
-				pagingHTML.append("[ <span id='paging'			onclick='boardSearchPaging("+i+")'>"+i+"</span> ]");
+				pagingHTML.append("<li>				<a href='/mysite02/board?a=search&search="+search+"&p="+i+"'>"+i+"</a></li>");
 		}
 		
 		if(endPage<totalP)
-			pagingHTML.append("[<span id='paging' onclick='boardSearchPaging("+(endPage+1)+")'>다음</span>]");
+			pagingHTML.append("<li><a href='/mysite02/board?a=search&search="+search+"&p="+(endPage+1)+"'>▶</a></li>");
 	}
 	
 	

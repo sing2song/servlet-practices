@@ -35,7 +35,7 @@ public class BoardDao {
 		Connection conn=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-System.out.println("여기까지 왔나?");
+		
 		try {
 			conn = getConnection();
 			
@@ -45,6 +45,73 @@ System.out.println("여기까지 왔나?");
 			
 			//4. 바인딩
 			pstmt.setInt(1, 5*(Integer.parseInt(p)-1));
+			
+			//5. SQL문 실행
+			rs = pstmt.executeQuery();
+
+			//6. 데이터 가져오기
+			while(rs.next()) {
+				Long no = rs.getLong(1);
+				String title = rs.getString(2);
+				String writer = rs.getString(3);
+				String email = rs.getString(4);
+				String password = rs.getString(5);
+				String hit = rs.getString(6);
+				String regDate = rs.getString(7);
+				String depth = rs.getString(8);
+				String flag = rs.getString(9);
+				
+				BoardVo vo = new BoardVo();
+				vo.setNo(no);
+				vo.setTitle(title);
+				vo.setWriter(writer);
+				vo.setEmail(email);
+				vo.setPassword(password);
+				vo.setHit(hit);
+				vo.setRegDate(regDate);
+				vo.setDepth(depth);
+				vo.setFlag(flag);
+				
+				list.add(vo);
+			}
+
+		}catch (SQLException  e) {
+			System.out.println("error : "+e);
+		}finally {
+			try {
+				if(rs==null) {
+					rs.close();
+				}
+				if(pstmt!=null) {
+					pstmt.close();//없어도 되지만 명시적으로 등록
+				}
+				if(conn!=null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+
+		return list;
+	}
+	
+	public List<BoardVo> findSearchAll(String p,String search) {
+		List<BoardVo> list = new ArrayList<>();
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = "select R1.* FROM(select no, title, writer, email, password, hit ,date_format(regDate, '%Y-%m-%d %H:%i:%s'),depth,flag from board where title like ? or contents like ? order by cast(g_no as unsigned) desc, cast(o_no as unsigned) asc, no asc, cast(depth as unsigned) asc) R1 LIMIT 5 OFFSET ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩
+			pstmt.setString(1, "%"+search+"%");
+			pstmt.setString(2, "%"+search+"%");
+			pstmt.setInt(3, 5*(Integer.parseInt(p)-1));
 			
 			//5. SQL문 실행
 			rs = pstmt.executeQuery();
@@ -445,6 +512,52 @@ System.out.println("여기까지 왔나?");
 		return result;
 		
 	}
+
+	public int getTotalSearchB(String search) {
+		int result=0;
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = "select count(*) from board where title like ? or contents like ?";
+			pstmt = conn.prepareStatement(sql);
+
+			//4. 바인딩
+			pstmt.setString(1, "%"+search+"%");
+			pstmt.setString(2, "%"+search+"%");
+			
+			//5. SQL문 실행
+			rs = pstmt.executeQuery();
+
+			//6. 데이터 가져오기
+			if(rs.next()) {
+				result=rs.getInt(1);				
+			}
+
+		}catch (SQLException  e) {
+			System.out.println("error : "+e);
+		}finally {
+			try {
+				if(rs==null) {
+					rs.close();
+				}
+				if(pstmt!=null) {
+					pstmt.close();//없어도 되지만 명시적으로 등록
+				}
+				if(conn!=null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	
 	
 	
 }

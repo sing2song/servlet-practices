@@ -176,31 +176,30 @@ public class BoardServlet extends HttpServlet {
 			}
 			
 			String search = request.getParameter("search");
-			/*
+			System.out.println("search내용="+search);
 			//검색페이징처리
-			int endNum = Integer.parseInt(p) * 5;
-			int startNum = endNum-4;
-			
-			int totalSearchB = new BoardDao().getTotalSearchB(startNum,endNum,search);
+			int totalSearchB = new BoardDao().getTotalSearchB(search);
 			BoardPaging boardPaging = new BoardPaging();
 			
-			boardPaging.setCurrentPage(pg);
+			boardPaging.setCurrentPage(Integer.parseInt(p));
 			boardPaging.setPageBlock(3);
 			boardPaging.setPageSize(5);
 			boardPaging.setTotalB(totalSearchB);		
-			boardPaging.makeSearchPagingHTML();
-			*/
+			
+			boardPaging.makeSearchPagingHTML(search);
+			
+			
 			//목록처리
-			List<BoardVo> list = new BoardDao().findAll(p); 
+			List<BoardVo> list = new BoardDao().findSearchAll(p,search); 
 			
 			request.setAttribute("list", list);
-			//request.setAttribute("boardPaging", boardPaging);
+			request.setAttribute("boardPaging", boardPaging);
 			session.setAttribute("authUser", authUser);//로그인정보
 			
 			WebUtil.forward("/WEB-INF/views/board/index.jsp", request, response);
 			
 		}else {//index들어가기
-			System.out.println("action은 캐치했어?");
+			
 			//로그인확인 - Access Control(접근 제어)
 			HttpSession session = request.getSession();	
 			UserVo authUser = (UserVo)session.getAttribute("authUser");	
@@ -215,7 +214,7 @@ public class BoardServlet extends HttpServlet {
 			}
 			
 			List<BoardVo> list = new BoardDao().findAll(p); 
-			System.out.println(list);
+			
 			
 			//페이징처리
 			
