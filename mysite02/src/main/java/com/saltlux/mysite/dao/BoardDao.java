@@ -35,7 +35,7 @@ public class BoardDao {
 		Connection conn=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-
+System.out.println("여기까지 왔나?");
 		try {
 			conn = getConnection();
 			
@@ -403,6 +403,47 @@ public class BoardDao {
 		}		
 
 		return result;
+	}
+
+	public int getTotalB() {
+		int result=0;
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = "select count(*) from board";
+			pstmt = conn.prepareStatement(sql);
+
+			//5. SQL문 실행
+			rs = pstmt.executeQuery();
+
+			//6. 데이터 가져오기
+			if(rs.next()) {
+				result=rs.getInt(1);				
+			}
+
+		}catch (SQLException  e) {
+			System.out.println("error : "+e);
+		}finally {
+			try {
+				if(rs==null) {
+					rs.close();
+				}
+				if(pstmt!=null) {
+					pstmt.close();//없어도 되지만 명시적으로 등록
+				}
+				if(conn!=null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+		
 	}
 	
 	

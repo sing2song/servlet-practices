@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.saltlux.mysite.dao.BoardDao;
+import com.saltlux.mysite.vo.BoardPaging;
 import com.saltlux.mysite.vo.BoardVo;
 import com.saltlux.mysite.vo.UserVo;
 import com.saltlux.web.mvc.WebUtil;
@@ -160,8 +161,46 @@ public class BoardServlet extends HttpServlet {
 
 			WebUtil.redirect(request.getContextPath() + "/board?p=1", request, response);
 			
-		}else {//index들어가기
+		}else if("search".equals(action)){
+			HttpSession session = request.getSession();	
+			UserVo authUser = (UserVo)session.getAttribute("authUser");	
 			
+			String p="";
+			if(request.getParameter("p")==null)
+				p = 1+"";
+			else
+				p = request.getParameter("p");
+			
+			if(authUser==null) {//비로그인상태
+				request.setAttribute("authResult", "fail");				
+			}
+			
+			String search = request.getParameter("search");
+			/*
+			//검색페이징처리
+			int endNum = Integer.parseInt(p) * 5;
+			int startNum = endNum-4;
+			
+			int totalSearchB = new BoardDao().getTotalSearchB(startNum,endNum,search);
+			BoardPaging boardPaging = new BoardPaging();
+			
+			boardPaging.setCurrentPage(pg);
+			boardPaging.setPageBlock(3);
+			boardPaging.setPageSize(5);
+			boardPaging.setTotalB(totalSearchB);		
+			boardPaging.makeSearchPagingHTML();
+			*/
+			//목록처리
+			List<BoardVo> list = new BoardDao().findAll(p); 
+			
+			request.setAttribute("list", list);
+			//request.setAttribute("boardPaging", boardPaging);
+			session.setAttribute("authUser", authUser);//로그인정보
+			
+			WebUtil.forward("/WEB-INF/views/board/index.jsp", request, response);
+			
+		}else {//index들어가기
+			System.out.println("action은 캐치했어?");
 			//로그인확인 - Access Control(접근 제어)
 			HttpSession session = request.getSession();	
 			UserVo authUser = (UserVo)session.getAttribute("authUser");	
@@ -176,8 +215,24 @@ public class BoardServlet extends HttpServlet {
 			}
 			
 			List<BoardVo> list = new BoardDao().findAll(p); 
+			System.out.println(list);
+			
+			//페이징처리
+			
+			int totalB=new BoardDao().getTotalB();
+			BoardPaging boardPaging = new BoardPaging();
+			
+			boardPaging.setCurrentPage(Integer.parseInt(p));
+			boardPaging.setPageBlock(3);
+			boardPaging.setPageSize(5);
+			boardPaging.setTotalB(totalB);
+			
+			boardPaging.makePagingHTML();
+			
+			
 			request.setAttribute("list", list);
-			request.setAttribute("p", 1);//디폴트 페이지
+			//request.setAttribute("p", 1);//디폴트 페이지
+			request.setAttribute("boardPaging", boardPaging);
 			session.setAttribute("authUser", authUser);//로그인정보
 	
 			WebUtil.forward("/WEB-INF/views/board/index.jsp", request, response);
