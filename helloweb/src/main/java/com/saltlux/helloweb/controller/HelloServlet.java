@@ -1,4 +1,4 @@
-package com.soltlux.helloweb.controller;
+package com.saltlux.helloweb.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;

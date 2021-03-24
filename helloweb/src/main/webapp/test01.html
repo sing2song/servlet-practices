@@ -1,0 +1,63 @@
+
+     
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<input type=text name=url>
+    <input type=button value="url 로드" onclick="loadURL()">
+    <div id=output></div>
+    
+	<h1>1. 외부로 나가는 링크는 몇 개?</h1>
+    <p id="aCount">
+       
+    </p>
+    <br><br>
+    
+    <h1>2. 이미지 태그의 갯수와 링크는?</h1>
+    <p id="imgCount">
+
+    </p>
+    <p id="imgSrc">
+    
+    </p>
+    
+	<script>
+        function loadURL()
+        {
+            var url = document.all.url;
+            if(url.value == "") {
+            alert("url 을 입력해야합니다.");
+            url.focus();
+            return;
+            }
+            
+            var xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp.open("GET", url.value, "false");
+            xmlhttp.send();
+            
+            //document.getElementById("output").innerText = xmlhttp.responseText;
+            var inText = xmlhttp.responseText;
+            
+            var aCount = inText.split("</a").length-1;
+            //var aCount = substr_count(inText,"</a");
+            document.getElementById("aCount").innerHTML = "<h3>"+aCount+"개</h3>";
+            
+           
+            var imgCount = inText.split("<img").length-1;            
+            document.getElementById("imgCount").innerHTML = "<h3>"+imgCount+"개</h3>";
+            
+           /*             
+           	var img = inText.indexOf("<img");
+           	var src = inText.substr(img,-1).indexOf("src=");  
+           	
+           	src.substring(0,)
+            */
+            
+        }
+     </script>
+</body>
+</html>
