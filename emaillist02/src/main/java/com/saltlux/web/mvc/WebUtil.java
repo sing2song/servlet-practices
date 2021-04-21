@@ -1,4 +1,4 @@
-package com.soltlux.web.mvc;
+package com.saltlux.web.mvc;
 
 import java.io.IOException;
 

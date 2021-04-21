@@ -1,4 +1,4 @@
-package com.soltlux.guestbook02.vo;
+package com.saltlux.guestbook.vo;
 
 public class Guestbook02Vo {
 	private Long no;

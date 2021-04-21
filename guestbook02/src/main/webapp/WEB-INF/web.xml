@@ -14,7 +14,7 @@
     <description></description>
     <display-name>GuestbookServlet</display-name>
     <servlet-name>GuestbookServlet</servlet-name>
-    <servlet-class>com.soltlux.guestbook02.controller.GuestbookServlet</servlet-class>
+    <servlet-class>com.saltlux.guestbook.controller.GuestbookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GuestbookServlet</servlet-name>

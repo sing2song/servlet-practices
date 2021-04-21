@@ -1,4 +1,4 @@
-package com.soltlux.emaillist.controller;
+package com.saltlux.emaillist.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.soltlux.emaillist.dao.EmaillistDao;
-import com.soltlux.emaillist.vo.EmaillistVo;
-import com.soltlux.web.mvc.WebUtil;
+import com.saltlux.emaillist.dao.EmaillistDao;
+import com.saltlux.emaillist.vo.EmaillistVo;
+import com.saltlux.web.mvc.WebUtil;
 
 public class EmaillistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

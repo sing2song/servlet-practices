@@ -104,14 +104,13 @@ public class UserServlet extends HttpServlet {
 		
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
-			
+			System.out.println("로그인한 정보"+email+":"+password);
 			UserVo vo = new UserVo();
 			vo.setEmail(email);
 			vo.setPassword(password);
 			
 			UserVo authUser = new UserDao().findByEmailAndPassword(vo);
-			authUser.setEmail(email);
-			authUser.setPassword(password);
+			
 			
 			if(authUser==null) {//로그인실패
 				request.setAttribute("authResult", "fail");
@@ -119,6 +118,9 @@ public class UserServlet extends HttpServlet {
 				WebUtil.forward("/WEB-INF/views/user/loginform.jsp", request, response);
 				return;	
 			}
+			
+			authUser.setEmail(email);
+			authUser.setPassword(password);
 			
 			//인증처리
 			HttpSession session = request.getSession(true);

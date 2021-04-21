@@ -1,4 +1,4 @@
-package com.soltlux.guestbook02.dao;
+package com.saltlux.guestbook.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.soltlux.guestbook02.vo.Guestbook02Vo;
+import com.saltlux.guestbook.vo.Guestbook02Vo;
 
 public class Guestbook02Dao {
 	private Connection getConnection() throws SQLException {

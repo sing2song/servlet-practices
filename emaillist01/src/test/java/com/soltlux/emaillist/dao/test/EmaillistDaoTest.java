@@ -2,8 +2,8 @@ package com.soltlux.emaillist.dao.test;
 
 import java.util.List;
 
-import com.soltlux.emaillist.dao.EmaillistDao;
-import com.soltlux.emaillist.vo.EmaillistVo;
+import com.saltlux.emaillist.dao.EmaillistDao;
+import com.saltlux.emaillist.vo.EmaillistVo;
 
 public class EmaillistDaoTest {
 	

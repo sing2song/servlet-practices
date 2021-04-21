@@ -1,4 +1,4 @@
-package com.soltlux.emaillist.vo;
+package com.saltlux.emaillist.vo;
 
 public class EmaillistVo {
 	private Long no;

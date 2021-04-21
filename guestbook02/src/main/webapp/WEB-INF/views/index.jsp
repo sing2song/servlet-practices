@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.soltlux.guestbook02.vo.Guestbook02Vo"%>
-<%@page import="com.soltlux.guestbook02.dao.Guestbook02Dao"%>
+<%@page import="com.saltlux.guestbook.vo.Guestbook02Vo"%>
 <%@page import="java.util.List"%>
 <%
 List<Guestbook02Vo> list = (List<Guestbook02Vo>)request.getAttribute("list");
@@ -12,7 +11,7 @@ List<Guestbook02Vo> list = (List<Guestbook02Vo>)request.getAttribute("list");
 <title>방명록</title>
 </head>
 <body>
-	<form action="<%=request.getContextPath() %>/GuestbookServlet?a=add" method="post">
+	<form action="<%=request.getContextPath()%>/GuestbookServlet?a=add" method="post">
 		<table border=1 width=500>
 			<tr>
 				<td>이름</td>
@@ -30,8 +29,8 @@ List<Guestbook02Vo> list = (List<Guestbook02Vo>)request.getAttribute("list");
 	</form>
 	<%
 	int count = list.size();
-	int index = 0;
-	for (Guestbook02Vo vo : list) {
+		int index = 0;
+		for (Guestbook02Vo vo : list) {
 	%>
 	<br>
 	<table width=510 border=1>

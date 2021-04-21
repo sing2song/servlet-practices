@@ -12,7 +12,7 @@
   
   <servlet>
     <servlet-name>EmaillistServlet</servlet-name>
-    <servlet-class>com.soltlux.emaillist.controller.EmaillistServlet</servlet-class>
+    <servlet-class>com.saltlux.emaillist.controller.EmaillistServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>

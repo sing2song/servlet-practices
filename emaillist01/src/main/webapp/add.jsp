@@ -1,5 +1,5 @@
-<%@page import="com.soltlux.emaillist.dao.EmaillistDao"%>
-<%@page import="com.soltlux.emaillist.vo.EmaillistVo"%>
+<%@page import="com.saltlux.emaillist.dao.EmaillistDao"%>
+<%@page import="com.saltlux.emaillist.vo.EmaillistVo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
