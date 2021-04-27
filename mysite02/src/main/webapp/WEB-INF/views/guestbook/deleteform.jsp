@@ -25,7 +25,7 @@
 				<c:if test="${'fail'==authResult }">						
 						<div style="text-align:center;">비밀번호가 틀렸습니다.</div>							
 				</c:if>
-				<a href="${pageContext.request.contextPath }/guestbook?a=list">방명록 리스트</a>
+				<a href="${pageContext.request.contextPath }/guestbook/=list">방명록 리스트</a>
 			</div>
 		</div>
 		<c:import url="/WEB-INF/views/includes/navigation.jsp" />

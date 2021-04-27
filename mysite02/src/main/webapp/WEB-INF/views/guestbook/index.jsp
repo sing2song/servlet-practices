@@ -20,7 +20,7 @@
 			<div id="content">
 				<div id="guestbook">
 					<form
-						action="${pageContext.request.contextPath }/guestbook?a=add"
+						action="${pageContext.request.contextPath }/guestbook/add"
 						method="post">
 						<table border=1 width=500>
 							<tr>
@@ -47,7 +47,7 @@
 								<td>${vo.name }</td>
 								<td>${vo.reg_date}</td>
 								<td>
-								<a href="${pageContext.request.contextPath }/guestbook?a=deleteform&no=${vo.no}">삭제</a>
+								<a href="${pageContext.request.contextPath }/guestbook/deleteform&no=${vo.no}">삭제</a>
 								</td>
 							</tr>
 							<tr>
